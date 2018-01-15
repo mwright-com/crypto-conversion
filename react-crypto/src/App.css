@@ -1,20 +1,30 @@
 body {
   background: #f1f1f1;
-  padding:50px;
-}
+  padding: 50px; }
 
 div#crypto-container {
-  background:white;
+  background: white;
   width: 70%;
   margin: 0 auto 4px auto;
   padding: 1em;
-  box-shadow: 1px 1px 0 lightgrey;
-}
+  box-shadow: 1px 1px 0 lightgrey; }
 
 span.left {
-  font-weight: bold;
-}
+  font-weight: bold; }
 
 span.right {
-  float:right;
-}
+  float: right; }
+  span.right input {
+    text-align: right; }
+
+.conversion-rate {
+  text-align: center; }
+
+#coinSymbols {
+  background: white;
+  text-align: center;
+  margin: 0 auto 4px auto;
+  padding: 1em;
+  box-shadow: 1px 1px 0 lightgrey; }
+
+/*# sourceMappingURL=App.css.map */
