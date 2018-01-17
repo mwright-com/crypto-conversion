@@ -10,11 +10,10 @@ const Countries = [
 
 import React, { Component } from 'react';
 import './App.css';
-import './react-tagsinput.css';
+import './reactTags.css';
 import axios from 'axios';
-import TagsInput from 'react-tagsinput';
-import PropTypes from 'prop-types';
-import Autosuggest from 'react-autosuggest';
+import ReactDOM from 'react-dom';
+import { WithContext as ReactTags } from 'react-tag-input';
 
 var NumberFormat = require('react-number-format');
 
@@ -25,11 +24,9 @@ class App extends Component {
 
     this.state = {
       cryptos: [],
-      tags: Countries,
+      tags: [{ id: 1, text: "Thailand" }, { id: 2, text: "India" }],
       suggestions: Countries
     }
-
-    console.log('App.js:31 props',props);
   };
 
   componentDidMount() {
@@ -104,20 +101,48 @@ class App extends Component {
     return false;
   };
 
-  handleChange(tags) {
-    this.setState({tags})
+  handleDelete(i) {
+    let tags = this.state.tags;
+    tags.splice(i, 1);
+    this.setState({tags: tags});
+  }
+
+  handleAddition(tag) {
+    let tags = this.state.tags;
+    tags.push({
+        id: tags.length + 1,
+        text: tag
+    });
+    this.setState({tags: tags});
+  }
+
+  handleDrag(tag, currPos, newPos) {
+    let tags = this.state.tags;
+
+    // mutate array 
+    tags.splice(currPos, 1);
+    tags.splice(newPos, 0, tag);
+
+    // re-render 
+    this.setState({ tags: tags });
   }
 
 
   render() {
 
+  const { tags, suggestions } = this.state;
+  console.log('App.js:134 this.state',this.state);
   window.state = this.state; // for console debugging only
-  window.props = this.props;
-
   return (
 
       <div className="App">
-        <TagsInput value={this.state.tags} onChange={this.handleChange.bind(this)} />
+        <div class="text-center">
+            <ReactTags tags={tags}
+                suggestions={suggestions}
+                handleDelete={this.handleDelete}
+                handleAddition={this.handleAddition}
+                handleDrag={this.handleDrag} />
+        </div>
 
         <div id="coinSymbols">
           List your coin/token symbols (comma, separated)<br />
