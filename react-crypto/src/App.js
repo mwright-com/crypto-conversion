@@ -7,6 +7,18 @@ const Countries = [
   "Anguilla"
 ]; 
 
+function states () {
+  return [
+    {abbr: 'AL', name: 'Alabama'},
+    {abbr: 'AK', name: 'Alaska'},
+    {abbr: 'AZ', name: 'Arizona'},
+    {abbr: 'AR', name: 'Arkansas'},
+    {abbr: 'CA', name: 'California'},
+    {abbr: 'CO', name: 'Colorado'},
+    {abbr: 'CT', name: 'Connecticut'}
+  ]
+}
+
 
 import React, { Component } from 'react';
 import './App.css';
@@ -111,13 +123,46 @@ class App extends Component {
 
   render() {
 
-  window.state = this.state; // for console debugging only
-  window.props = this.props;
+    window.state = this.state; // for console debugging only
+    window.props = this.props;
 
-  return (
+    function autocompleteRenderInput ({addTag, ...props}) {
+      const handleOnChange = (e, {newValue, method}) => {
+        if (method === 'enter') {
+          e.preventDefault()
+        } else {
+          props.onChange(e)
+        }
+      }
+
+      const inputValue = (props.value && props.value.trim().toLowerCase()) || ''
+      const inputLength = inputValue.length
+
+      let suggestions = states().filter((state) => {
+        return state.name.toLowerCase().slice(0, inputLength) === inputValue
+      })
+
+      return (
+        <Autosuggest
+          ref={props.ref}
+          suggestions={suggestions}
+          shouldRenderSuggestions={(value) => value && value.trim().length > 0}
+          getSuggestionValue={(suggestion) => suggestion.name}
+          renderSuggestion={(suggestion) => <span>{suggestion.name}</span>}
+          inputProps={{...props, onChange: handleOnChange}}
+          onSuggestionSelected={(e, {suggestion}) => {
+            addTag(suggestion.name)
+          }}
+          onSuggestionsClearRequested={() => {}}
+          onSuggestionsFetchRequested={() => {}}
+        />
+      )
+    }
+
+    return (
 
       <div className="App">
-        <TagsInput value={this.state.tags} onChange={this.handleChange.bind(this)} />
+        <TagsInput renderInput={autocompleteRenderInput} value={this.state.tags} onChange={this.handleChange.bind(this)} />
 
         <div id="coinSymbols">
           List your coin/token symbols (comma, separated)<br />
