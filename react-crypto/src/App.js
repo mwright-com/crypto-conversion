@@ -1,23 +1,10 @@
-const Countries = [
-  "Afghanistan",
-  "Albania",
-  "Algeria",
-  "Andorra",
-  "Angola",
-  "Anguilla"
-]; 
 
-function states () {
-  return [
-    {abbr: 'AL', name: 'Alabama'},
-    {abbr: 'AK', name: 'Alaska'},
-    {abbr: 'AZ', name: 'Arizona'},
-    {abbr: 'AR', name: 'Arkansas'},
-    {abbr: 'CA', name: 'California'},
-    {abbr: 'CO', name: 'Colorado'},
-    {abbr: 'CT', name: 'Connecticut'}
-  ]
-}
+const arrCoinSymbols = [
+  "BTC",
+  "ETH",
+  "XRP",
+  "XLM"
+];
 
 
 import React, { Component } from 'react';
@@ -27,8 +14,12 @@ import axios from 'axios';
 import TagsInput from 'react-tagsinput';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
+import coinListSmall from './coinlist';
+
 
 var NumberFormat = require('react-number-format');
+const coinListMini = coinListSmall;
+console.log('App.js:32 coinListMini',coinListMini);
 
 class App extends Component {
 
@@ -37,17 +28,19 @@ class App extends Component {
 
     this.state = {
       cryptos: [],
-      tags: Countries,
-      suggestions: Countries
+      tags: arrCoinSymbols,
+      suggestions: arrCoinSymbols.join(),
+      coinListSmall: coinListMini
     }
 
     console.log('App.js:31 props',props);
   };
 
   componentDidMount() {
-    var coinSymbols = "BTC,ETH,XLM";
+    //var coinSymbolsDefault = "BTC,ETH,XLM";
+    var coinSymbolsDefault = arrCoinSymbols.join();
 
-    axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,XLM&tsyms=USD')
+    axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + coinSymbolsDefault + '&tsyms=USD')
       .then(res => {
         var converted = {};
         const cryptos = res.data;
@@ -64,7 +57,7 @@ class App extends Component {
         this.setState({
           cryptos: cryptos,
           converted: converted,
-          coinSymbols: coinSymbols
+          coinSymbols: coinSymbolsDefault
         });
 
         console.log('App.js:39 this.state.coinSymbols',this.state.coinSymbols);
@@ -138,20 +131,80 @@ class App extends Component {
       const inputValue = (props.value && props.value.trim().toLowerCase()) || ''
       const inputLength = inputValue.length
 
-      let suggestions = states().filter((state) => {
-        return state.name.toLowerCase().slice(0, inputLength) === inputValue
-      })
+
+      // let suggestions = states().filter((state) => {
+      //   return state.name.toLowerCase().slice(0, inputLength) === inputValue
+      // });
+
+      // console.log('App.js:148 suggestions',suggestions);
+
+      // return (
+      //   <Autosuggest
+      //     ref={props.ref}
+      //     suggestions={suggestions}
+      //     shouldRenderSuggestions={(value) => value && value.trim().length > 0}
+      //     getSuggestionValue={(suggestion) => suggestion.name}
+      //     renderSuggestion={(suggestion) => <span>{suggestion.name}</span>}
+      //     inputProps={{...props, onChange: handleOnChange}}
+      //     onSuggestionSelected={(e, {suggestion}) => {
+      //       addTag(suggestion.name)
+      //     }}
+      //     onSuggestionsClearRequested={() => {}}
+      //     onSuggestionsFetchRequested={() => {}}
+      //   />
+      // )
+
+      //let suggestions = Object.keys(coinListSmall).map(function(key) { return coinListSmall[key]; });
+
+      // let suggestions = coinListSmall.keys(myObject).map(function(key,index){
+      //   myObject[key] = key;
+      // });
+
+      // let suggestions = Object.keys(coinListSmall).reduce(key => {
+      //     return coinListSmall[key] ? coinListSmall[key].Symbol.toString().toLowerCase().slice(0,inputLength) === inputValue : false;
+      // });
+
+console.log('App.js:166 Object.keys(coinListMini)',Object.keys(coinListMini));
+console.log('App.js:166 coinListMini',Object.keys(coinListMini));
+      let suggestions = Object.keys(coinListMini).reduce(function(newObj,key) {
+        //console.log('coinListMini[key].Symbol.toString().toLowerCase().slice(0,inputLength)=',coinListMini[key].Symbol.toString().toLowerCase().slice(0,inputLength));
+         
+        console.log('App.js:171 key',key + ' : ' + inputValue);
+        console.log('App.js:171 newObj',newObj);
+        console.log('App.js:171 coinListMini[key].Symbol.toString().toLowerCase().slice(0,inputLength)',coinListMini[key].Symbol.toString().toLowerCase().slice(0,inputLength) + ' : ' + inputValue);
+        if ( inputLength > 1 && coinListMini[key].Symbol.toString().toLowerCase().slice(0,inputLength) === inputValue ) {
+
+          console.log('coinListMini[key].Symbol',coinListMini[key].Symbol);
+          console.log('coinListMini[key]',coinListMini[key]);
+          console.log('key',key);
+          console.log('inputValue',inputValue);   
+
+          newObj.push({
+            "Id" : coinListMini[key].Id,
+            "Name" : coinListMini[key].Name,
+            "Symbol" : coinListMini[key].Symbol,
+            "CoinName" : coinListMini[key].CoinName,
+            "FullName" : coinListMini[key].FullName
+          });
+          console.log('App.js:187 newObj',newObj); 
+
+        }
+        //return newObj ? inputLength > 1 && coinListMini[key].Symbol.toString().toLowerCase().slice(0,inputLength) === inputValue : false;
+        return newObj;
+      }, []);
+
+      console.log('App.js:177 suggestions',suggestions);
 
       return (
         <Autosuggest
           ref={props.ref}
           suggestions={suggestions}
-          shouldRenderSuggestions={(value) => value && value.trim().length > 0}
-          getSuggestionValue={(suggestion) => suggestion.name}
-          renderSuggestion={(suggestion) => <span>{suggestion.name}</span>}
+          shouldRenderSuggestions={(value) => value && value.trim().length > 1}
+          getSuggestionValue={(suggestion) => suggestion.Symbol}
+          renderSuggestion={(suggestion) => <span>{suggestion.FullName}</span>}
           inputProps={{...props, onChange: handleOnChange}}
           onSuggestionSelected={(e, {suggestion}) => {
-            addTag(suggestion.name)
+            addTag(suggestion.Symbol)
           }}
           onSuggestionsClearRequested={() => {}}
           onSuggestionsFetchRequested={() => {}}
@@ -163,12 +216,6 @@ class App extends Component {
 
       <div className="App">
         <TagsInput renderInput={autocompleteRenderInput} value={this.state.tags} onChange={this.handleChange.bind(this)} />
-
-        <div id="coinSymbols">
-          List your coin/token symbols (comma, separated)<br />
-          <input type="text" name="coinSymbols" size="100" defaultValue={this.state.coinSymbols} /> 
-          <a href="#" class="button">Update Coin List</a><br />
-        </div>
 
         {Object.keys(this.state.cryptos).map((key) => (
           <div id="crypto-container">
