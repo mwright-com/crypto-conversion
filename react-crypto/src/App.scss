@@ -1,5 +1,4 @@
 body {
-	background: #f1f1f1;
 	padding:50px;
 }
 
@@ -8,27 +7,43 @@ div#crypto-container {
 	width: 70%;
 	margin: 0 auto 4px auto;
 	padding: 1em;
-	box-shadow: 1px 1px 0 lightgrey;
+	xbox-shadow: 1px 1px 0 lightgrey;
+	border-bottom: 1px solid #eee;
+
+	.currency {
+		padding-right: 20px;
+	}
+
+	span.left {
+	  	font-weight: bold;
+	}
+
+	span.right {
+		xfloat:right;
+	  	font-weight: bold;
+	}
+
+
+	span {
+
+	  input {
+	  	text-align: right;
+	  	border: none;
+	  	border-bottom: 1px solid #ccc;
+	  	font-size: 1.2em;
+	  }
+
+	}
 }
 
 .text-center {
 	text-align: center;
 }
 
-span.left {
-  	font-weight: bold;
-}
-
-span.right {
-	float:right;
-
-  input {
-  	text-align: right;
-  }
-}
-
 .conversion-rate {
-	text-align: center;
+	text-align: right;
+	padding-top: 10px;
+	font-size: .7em;
 }
 
 #coinSymbols {
