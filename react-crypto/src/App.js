@@ -285,7 +285,7 @@ class App extends Component {
           decimalScale={2}
           fixedDecimalScale={true}
           thousandSeparator={true} 
-        /></span></div>
+        /></span></div> 
 
         {Object.keys(this.state.cryptos).map((key) => (
           <div class="crypto-container container">
