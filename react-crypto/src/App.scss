@@ -1,28 +1,59 @@
-body {
-	padding:50px;
+$blue-text : #3761a7;
+$blue-bg : #eeeeff;
+$blue-border : #4787e7;
+$black : #000000;
+
+.black {
+	color: $black;
 }
 
-div#crypto-container {
+body {
+	padding: 50px !important;
+}
+
+.App {
+
+	.container {
+		width: 70%;
+		min-width: 800px;
+	}
+
+}
+
+div.crypto-container {
 	background:white;
-	width: 70%;
 	margin: 0 auto 4px auto;
 	padding: 1em;
-	xbox-shadow: 1px 1px 0 lightgrey;
-	border-bottom: 1px solid #eee;
+	border: none;
 
 	.currency {
 		padding-right: 20px;
 	}
 
+	.base-currency-container {
+		display: inline-block;
+	}
+
+	.base.currency {
+		padding-right: 5px;
+	}
+
+	.currency-name {
+		display: inline-block;
+		min-width: 40px;
+		text-align: left;
+	}
+
+	.currency-name-small {
+		display: none;
+	}
+
 	span.left {
-	  	font-weight: bold;
 	}
 
 	span.right {
 		xfloat:right;
-	  	font-weight: bold;
 	}
-
 
 	span {
 
@@ -30,10 +61,35 @@ div#crypto-container {
 	  	text-align: right;
 	  	border: none;
 	  	border-bottom: 1px solid #ccc;
-	  	font-size: 1.2em;
+	  	font-size: 1.6em;
+	  	color: #888;
+	  	outline: none;
+	  	max-width: 200px;
+	  	padding-right: 5px;
 	  }
 
 	}
+
+}
+
+.total-dollars {
+	text-align: center;
+	padding: 0 0 20px 0;
+	font-size: 2em;
+	color: #888;
+	margin: 0 auto;
+}
+
+.up {
+	color: #33cc33 !important;
+}
+
+.down {
+	color: #cc3333 !important;
+}
+
+.change {
+	font-size: 1.6em;
 }
 
 .text-center {
@@ -41,9 +97,17 @@ div#crypto-container {
 }
 
 .conversion-rate {
-	text-align: right;
-	padding-top: 10px;
+	padding-top: 5px;
+    padding-left: 20px;
 	font-size: .7em;
+    float: right;
+    display: inline-block;
+    width: 140px;
+    text-align: right;
+}
+
+.conversion-rate-small {
+	display: none;
 }
 
 #coinSymbols {
@@ -55,15 +119,31 @@ div#crypto-container {
 }
 
 .react-tagsinput {
-	width: 70%;
     background-color: #fff;
-    border: 1px solid #666;
+    border: none !important;
+    border-bottom: 1px solid #666 !important;
     overflow: hidden;
     padding-left: 5px;
     padding-top: 5px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     margin-left: auto;
     margin-right: auto;
+
+    .react-tagsinput-tag {
+    	border: none;
+    	color: #888;
+		background: #eee;
+		border-radius: 4px;
+		border-bottom: 1px solid #ccc;
+		border-right: 1px solid #ccc;
+		font-size: 1.2em;
+    }
+
+    .react-tagsinput-tag:hover {
+		background: #ddddff;
+		border-bottom: 1px solid $blue-border;
+		border-right: 1px solid $blue-border;
+    }
 }
 
 .react-autosuggest__container {
@@ -85,7 +165,167 @@ div#crypto-container {
 		span {
 			position: relative;
 			display: block;
+		    font-size: .8em;
+		    padding: 3px;
 		}
 
 	}
+
+	.react-tagsinput-input {
+		width: 200px;
+	}
+
+}
+
+// Responsive
+
+@media (max-width: 1200px) {
+
+	div.crypto-container {
+
+		span input {
+		    font-size: 1.2em;
+		    width: 140px;
+		}
+
+		.currency {
+			width: 160px;
+		}
+
+	}
+
+	.conversion-rate {
+		width: 160px;
+	}
+
+	.total-dollars {
+		font-size: 1.6em;
+	}
+
+}
+
+@media (max-width: 992px) {
+
+	.App {
+
+		.container {
+			min-width: 600px;
+		}
+
+	}
+
+	.react-tagsinput {
+
+		.react-tagsinput-tag {
+		    font-size: 1em;
+		}
+
+	}
+
+	div.crypto-container {
+		padding: .5em 0;
+
+		.base.currency input {
+			width: 120px;
+		}
+
+		span input {
+		    font-size: 1.2em;
+		    width: 100px;
+		    padding-right: 5px
+		}
+
+		.currency {
+			width: 160px;
+		}
+
+	}
+
+	.change {
+		font-size: 1.2em;
+	}
+
+	.conversion-rate {
+		width: 140px;
+		padding-top: 0px;
+	}
+
+}
+
+@media (max-width: 640px) {
+
+	body {
+		padding: 20px !important;
+	}
+
+	.App {
+
+		.container {
+			min-width: 460px;
+		}
+
+	}
+
+	.react-tagsinput {
+
+		.react-tagsinput-tag {
+		    font-size: .8em;
+		}
+
+	}
+
+	.total-dollars {
+		font-size: 1em;
+	}
+
+	div.crypto-container {
+
+		.base-currency-container {
+			float: right;
+		}
+
+		.base.currency input {
+			width: 120px;
+		}
+
+		span input {
+			font-size: .8em;
+		}
+
+		.currency-name {
+			display: none;
+		}
+
+		.currency-name-small {
+			display: inline-block;
+			min-width: 40px;
+			text-align: left;
+			font-size: .8em;
+		}
+
+	}
+
+	.conversion-rate {
+		display: none;
+	}
+
+	.conversion-rate-small {
+		display: none;
+		margin: 0 auto;
+		text-align: right;
+		font-size: .7em;
+		padding-top: 10px;
+	}
+
+	.change {
+		font-size: .8em;
+		width: 66px;
+		text-align: left;
+		display: inline-block;
+	}
+
+	.base-currency-name {
+		font-size: .8em;
+	}
+
 }
